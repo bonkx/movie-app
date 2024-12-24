@@ -1,0 +1,62 @@
+{% extends "web/base.html" %}
+
+{% block pageTitle %}
+Movie List
+{% endblock %}
+
+{% block content %}
+
+<div class="mt-3">
+    <input onkeyup="submitForm(event)" type="text" class="form-control" name="q" id="search"
+        placeholder="Search movies...">
+</div>
+
+<hr>
+
+<h5>Popular Movies this month</h5>
+
+<div class="row" id='data-list'>
+    {% include 'web/movie_list.html' %}
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(function () {
+        $.ajaxSetup({
+            headers: {
+                "X-CSRFTOKEN": "{{ csrf_token }}"
+            },
+        });
+
+        ajax_listMovie();
+    });
+
+    function ajax_listMovie() {
+        $.ajax({
+            url: '{% url "movie_list" %}',
+            method: 'GET',
+            data: {
+                'q': $("#search").val(),
+            },
+            success: function (data) {
+                $('#data-list').html(data);
+            },
+            error: function (error) {
+                console.log(error)
+                console.log("error")
+            }
+        })
+    }
+
+    function submitForm(e) {
+        var keyCode = e.keyCode ? e.keyCode : e.which;
+        if (keyCode == 13) {
+            e.preventDefault();
+            ajax_listMovie();
+            return false;
+        }
+    }
+</script>
+{% endblock %}

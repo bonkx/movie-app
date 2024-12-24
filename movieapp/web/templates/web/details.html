@@ -1,0 +1,42 @@
+{% extends "web/base.html" %}
+
+{% block pageTitle %}
+{{row.name}} - Movie Details
+{% endblock %}
+
+{% block content %}
+
+<button type="button" class="btn btn-outline-dark btn-sm mb-3"
+onclick="window.history.go(-1); return false;">Back</button>
+
+{% if row %}
+<h5>{{row.name}}</h5>
+<small>
+    ({{row.mpaa_rating.type}} : {{row.mpaa_rating.label|default_if_none:"-"}})
+</small>
+
+
+<div class="row mt-5">
+    <div class="col-md-3">
+        <img src="{{row.img_path}}@2x.png" width="240" alt="{{row.name}}">
+    </div>
+    <div class="col-md-9">
+        <h5>Details</h5>
+
+        <p>Genre : {{row.genre.all|join:", "}}</p>
+        <p>Language : {{row.language.name}}</p>
+        <p>Duration : {{row.duration}} minutes</p>
+        <p>User Rating : {{row.user_rating}}</p>
+
+        <br>
+
+        <h5>Synopsis</h5>
+        <p>{{row.description}}</p>
+    </div>
+</div>
+{% else %}
+<div>
+    No Details found!
+</div>
+{% endif %}
+{% endblock %}

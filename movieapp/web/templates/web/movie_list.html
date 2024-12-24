@@ -1,0 +1,18 @@
+{% for row in object_list  %}
+<div class="col-md-3">
+    <div>
+        <img src="{{row.img_path}}" alt="{{row.name}}">
+    </div>
+    <div>
+        <a href="{% url "movie_details" row.id %}">
+            <h5>{{row.name}}</h5>
+        </a>
+        <p>{{row.duration}} min</p>
+        <p>User Rating: {{row.user_rating}}</p>
+    </div>
+</div>
+{% empty %}
+<div>
+    No Movies found!
+</div>
+{% endfor %}
