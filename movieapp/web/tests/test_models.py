@@ -103,3 +103,7 @@ class MovieModelTest(TestCase):
         genre = self.movie.genre.all()
 
         self.assertEqual(len(genre), 2)
+
+    def test_get_absolute_url(self):
+        # This will also fail if the urlconf is not defined.
+        self.assertEqual(self.movie.get_absolute_url(), '/movies/1/')
