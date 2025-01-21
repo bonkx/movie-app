@@ -10,6 +10,15 @@ class MovieAdmin(admin.ModelAdmin):
     search_fields = ("name", "description",)
     list_display = ('id', 'name', 'description', 'img_path', 'duration', 'user_rating', 'language', 'get_genre', 'mpaa_rating')
 
+    fieldsets = (
+        ('Details Info', {
+            'fields': ('name', 'description', 'img_path', 'duration', 'user_rating')
+        }),
+        ('Others Info', {
+            'fields': ('language', 'genre', 'mpaa_rating')
+        }),
+    )
+
     def get_genre(self, obj):
         return ", ".join([genre.name for genre in obj.genre.all()])
     get_genre.short_description = 'Genre'

@@ -4,7 +4,7 @@
         <img src="{{row.img_path}}" alt="{{row.name}}">
     </div>
     <div>
-        <a href="{% url "movie_details" row.id %}">
+        <a href="{{row.get_absolute_url}}">
             <h5>{{row.name}}</h5>
         </a>
         <p>{{row.duration}} min</p>

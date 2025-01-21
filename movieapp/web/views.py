@@ -21,7 +21,7 @@ def movie_list(request):
                 Q(name__icontains=q)
             )
 
-        data = list(queryset.values())
+        data = queryset
         context = {
             'object_list': data,
         }
@@ -36,4 +36,4 @@ def details(request, id):
     context = {
         "row": queryset,
     }
-    return render(request, "web/details.html", context=context)
+    return render(request, "web/details.html", context)

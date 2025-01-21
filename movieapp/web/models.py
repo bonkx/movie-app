@@ -1,4 +1,7 @@
 from django.db import models
+from django.db.models import UniqueConstraint
+from django.db.models.functions import Lower
+from django.urls import reverse
 
 # Create your models here.
 
@@ -12,6 +15,13 @@ class Genre(models.Model):
     class Meta:
         ordering = ("name",)
         verbose_name_plural = "Genres"
+        constraints = [
+            UniqueConstraint(
+                Lower('name'),
+                name='genre_name_case_insensitive_unique',
+                violation_error_message="Genre already exists (case insensitive match)"
+            ),
+        ]
 
 
 class Language(models.Model):
@@ -23,6 +33,13 @@ class Language(models.Model):
     class Meta:
         ordering = ("name",)
         verbose_name_plural = "Languages"
+        constraints = [
+            UniqueConstraint(
+                Lower('name'),
+                name='language_name_case_insensitive_unique',
+                violation_error_message="Language already exists (case insensitive match)"
+            ),
+        ]
 
 
 class MpaaRating(models.Model):
@@ -51,6 +68,10 @@ class Movie(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        """Returns the URL to access a particular instance of the model."""
+        return reverse('movie_details', args=[str(self.id)])
 
     class Meta:
         ordering = ("id",)
