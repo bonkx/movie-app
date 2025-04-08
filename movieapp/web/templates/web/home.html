@@ -7,7 +7,7 @@ Movie List
 {% block content %}
 
 <div class="mt-3">
-    <input onkeyup="submitForm(event)" type="text" class="form-control" name="q" id="search"
+    <input onkeyup="submitForm(event)" type="text" class="form-control" name="q" id="search" value="{{request.GET.q}}"
         placeholder="Search movies...">
 </div>
 
@@ -23,6 +23,16 @@ Movie List
 
 {% block scripts %}
 <script>
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
     $(function () {
         $.ajaxSetup({
             headers: {
@@ -39,6 +49,8 @@ Movie List
             method: 'GET',
             data: {
                 'q': $("#search").val(),
+                'per_page': getParameterByName('per_page') == null ? 8 : getParameterByName('per_page'),
+                'page': getParameterByName('page') == null ? 1 : getParameterByName('page'),
             },
             success: function (data) {
                 $('#data-list').html(data);

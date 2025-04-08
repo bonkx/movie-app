@@ -1,5 +1,7 @@
 {% extends "web/base.html" %}
 
+{% load static  %}
+
 {% block pageTitle %}
 {{row.name}} - Movie Details
 {% endblock %}
@@ -18,7 +20,7 @@ onclick="window.history.go(-1); return false;">Back</button>
 
 <div class="row mt-5">
     <div class="col-md-3">
-        <img src="{{row.img_path}}@2x.png" width="240" alt="{{row.name}}">
+        <img src="{% static row.img_path %}" height="360" alt="{{row.name}}">
     </div>
     <div class="col-md-9">
         <h5>Details</h5>

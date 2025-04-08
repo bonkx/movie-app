@@ -1,9 +1,15 @@
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Q
 from django.http import HttpResponseBadRequest, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
+from django.views.generic import TemplateView
 from web.models import Movie
 
 # Create your views here.
+
+
+# class HomeView(TemplateView):
+#     template_name = "web/home.html"
 
 
 def index(request):
@@ -13,6 +19,8 @@ def index(request):
 def movie_list(request):
     if request.method == 'GET':
         q = request.GET.get("q", "")
+        per_page = request.GET.get("per_page", 10)
+        page = request.GET.get("page", 1)
 
         queryset = Movie.objects.all()
 
@@ -21,9 +29,16 @@ def movie_list(request):
                 Q(name__icontains=q)
             )
 
-        data = queryset
+        paginator = Paginator(queryset, per_page)
+        try:
+            object_list = paginator.page(page)
+        except PageNotAnInteger:
+            object_list = paginator.page(1)
+        except EmptyPage:
+            object_list = paginator.page(paginator.num_pages)
+
         context = {
-            'object_list': data,
+            'object_list': object_list,
         }
 
         return render(request, 'web/movie_list.html', context)
@@ -31,9 +46,9 @@ def movie_list(request):
 
 
 def details(request, id):
-    queryset = Movie.objects.filter(pk=id).first()
+    obj = get_object_or_404(Movie, pk=id)
 
     context = {
-        "row": queryset,
+        "row": obj,
     }
     return render(request, "web/details.html", context)

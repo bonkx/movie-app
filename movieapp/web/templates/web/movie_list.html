@@ -1,12 +1,14 @@
+{% load static humanize general_function %}
+
 {% for row in object_list  %}
 <div class="col-md-3">
     <div>
-        <img src="{{row.img_path}}" alt="{{row.name}}">
+        <a href="{{row.get_absolute_url}}">
+            <img src="{% static row.img_path %}" height="360" alt="{{row.name}}">
+        </a>
     </div>
     <div>
-        <a href="{{row.get_absolute_url}}">
-            <h5>{{row.name}}</h5>
-        </a>
+        <h5>{{row.name}}</h5>
         <p>{{row.duration}} min</p>
         <p>User Rating: {{row.user_rating}}</p>
     </div>
@@ -16,3 +18,65 @@
     No Movies found!
 </div>
 {% endfor %}
+
+
+<nav aria-label="Page navigation" class="bg-light d-flex justify-content-between">
+    <div class="align-self-center">
+        Showing {{ object_list.start_index }} to {{ object_list.end_index }} of
+        {{ object_list.paginator.count|floatformat:"0"|intcomma|replace_commas }} entries
+    </div>
+
+    <ul class="pagination mt-3">
+        <!-- Previous Section -->
+        {% if object_list.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?{% query_transform page=object_list.previous_page_number %}">Previous</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <span class="page-link">Previous</span>
+        </li>
+        {% endif %}
+        <!-- End Previous Section -->
+
+        <!-- hellip Section -->
+        {% if object_list.number|add:'-2' > 1 %}
+        <a class="page-link" href="?{% query_transform page=object_list.number|add:'-3' %}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+        </a>
+        {% endif %}
+
+        <!-- Pages Section -->
+        {% for i in object_list.paginator.page_range %}
+        {% if object_list.number == i %}
+        <li class="page-item active">
+            <span class="page-link">{{ i }}</span>
+        </li>
+        {% elif i > object_list.number|add:'-3' and i < object_list.number|add:'3' %}
+        <li class="page-item"><a class="page-link" href="?{% query_transform page=i %}">{{ i }}</a></li>
+        {% endif %}
+        {% endfor %}
+        <!-- End Pages Section -->
+
+        <!-- hellip Section -->
+        {% if object_list.paginator.num_pages > object_list.number|add:'2' %}
+        <a class="page-link" href="?{% query_transform page=object_list.number|add:'3' %}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+        </a>
+        {% endif %}
+
+        <!-- Next Section -->
+        {% if object_list.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?{% query_transform page=object_list.next_page_number %}">Next</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <span class="page-link">Next</span>
+        </li>
+        {% endif %}
+        <!-- End Next Section -->
+
+
+    </ul>
+</nav>
