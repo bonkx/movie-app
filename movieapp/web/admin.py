@@ -19,7 +19,7 @@ class MovieAdmin(admin.ModelAdmin):
         }),
     )
 
-    def get_genre(self, obj):
+    def get_genre(self, obj):  # pragma: no cover
         return ", ".join([genre.name for genre in obj.genre.all()])
     get_genre.short_description = 'Genre'
 

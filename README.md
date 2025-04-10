@@ -7,9 +7,9 @@ username : admin
 password : admin
 ```
 
-### How to run Django tests case
+### How to run Django pytest
 ```bash
 cd to project root
 
-python3 manage.py test
+pytest
 ```

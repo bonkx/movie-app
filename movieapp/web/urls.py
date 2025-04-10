@@ -5,6 +5,6 @@ urlpatterns = [
 
     path("", views.index, name="home"),
     # path("ajax/movie-list/", views.movie_list, name="movie_list"),
-    path("movies/<id>/", views.details, name="movie_details"),
+    path("movies/<int:pk>/", views.details, name="movie_details"),
 
 ]

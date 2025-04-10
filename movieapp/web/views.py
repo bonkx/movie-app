@@ -66,8 +66,8 @@ def index(request):
 #     return JsonResponse({'status': 'Invalid request'}, status=400)
 
 
-def details(request, id):
-    obj = get_object_or_404(Movie, pk=id)
+def details(request, pk):
+    obj = get_object_or_404(Movie, pk=pk)
 
     context = {
         "row": obj,
