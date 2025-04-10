@@ -9,5 +9,7 @@ password : admin
 
 ### How to run Django tests case
 ```bash
+cd to project root
+
 python3 manage.py test
 ```
